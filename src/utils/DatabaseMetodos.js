@@ -1,12 +1,12 @@
 import Database from "../database/Database.js";
 
-class DatabaseMetodos{
+class DatabaseMetodos {
     /**
      * Método de inserção de dados
      * @param {string} entidade 
      * @param {*} data 
      */
-    static inserir(entidade, data){
+    static inserir(entidade, data) {
         Database[entidade].push(data)
     }
 
@@ -15,8 +15,19 @@ class DatabaseMetodos{
      * @param {string} entidade 
      * @returns {any}
      */
-    static buscar(entidade){
-        return Database[entidade]
+    static buscar(entidade) {
+        const query = `
+        SELECT * FROM ${entidade};
+        `
+        return new Promisse((resolve, reject) => {
+            Database.all(query, (error, rows) => {
+                if (error) {
+                    console.log(error)
+                } else {
+                    resolve(rows)
+                }
+            })
+        })
     }
 
     /**
@@ -25,7 +36,7 @@ class DatabaseMetodos{
      * @param {string} id 
      * @returns {any}
      */
-    static buscarPorId(entidade, id){
+    static buscarPorId(entidade, id) {
         return Database[entidade][id]
     }
 
@@ -34,7 +45,7 @@ class DatabaseMetodos{
      * @param {string} entidade 
      * @param {string} id 
      */
-    static deletarPorId(entidade, id){
+    static deletarPorId(entidade, id) {
         delete Database[entidade][id]
     }
 
@@ -44,7 +55,7 @@ class DatabaseMetodos{
      * @param {string} id 
      * @param {any} data 
      */
-    static atualizarPorId(entidade, id, data){
+    static atualizarPorId(entidade, id, data) {
         Database[entidade][id] = data
     }
 }
