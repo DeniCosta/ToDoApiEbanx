@@ -1,13 +1,21 @@
 import Database from "../database/Database.js";
 
-class DatabaseMetodos {
+class DAO{
     /**
      * Método de inserção de dados
-     * @param {string} entidade 
-     * @param {*} data 
+     * @param {string} query 
+     * @param {Array<any>} data 
      */
-    static inserir(entidade, data) {
-        Database[entidade].push(data)
+    static inserir(query, data){
+        return new Promise((resolve, reject)=>{
+            Database.run(query, data, (error)=>{
+                if(error){
+                    console.log(error)
+                    reject(error)
+                }
+                resolve({error:false})
+            })
+        })
     }
 
     /**
@@ -15,13 +23,13 @@ class DatabaseMetodos {
      * @param {string} entidade 
      * @returns {any}
      */
-    static buscar(entidade) {
+    static buscar(entidade){
         const query = `
         SELECT * FROM ${entidade};
         `
-        return new Promisse((resolve, reject) => {
-            Database.all(query, (error, rows) => {
-                if (error) {
+        return new Promise((resolve, reject)=>{
+            Database.all(query, (error, rows)=>{
+                if(error){
                     console.log(error)
                 } else {
                     resolve(rows)
@@ -36,7 +44,7 @@ class DatabaseMetodos {
      * @param {string} id 
      * @returns {any}
      */
-    static buscarPorId(entidade, id) {
+    static buscarPorId(entidade, id){
         return Database[entidade][id]
     }
 
@@ -45,7 +53,7 @@ class DatabaseMetodos {
      * @param {string} entidade 
      * @param {string} id 
      */
-    static deletarPorId(entidade, id) {
+    static deletarPorId(entidade, id){
         delete Database[entidade][id]
     }
 
@@ -55,9 +63,9 @@ class DatabaseMetodos {
      * @param {string} id 
      * @param {any} data 
      */
-    static atualizarPorId(entidade, id, data) {
+    static atualizarPorId(entidade, id, data){
         Database[entidade][id] = data
     }
 }
 
-export default DatabaseMetodos;
+export default DAO;

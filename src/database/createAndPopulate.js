@@ -1,6 +1,9 @@
 import Database from "./Database.js";
 
-const USUARIO_TABLE = `
+/**
+ * Script sql de criação da tabela USUARIOS (SQLite é Case Sensitive, isto é, diferencia letras)
+ */
+const USUARIOS_TABLE = `
 CREATE TABLE IF NOT EXISTS "USUARIOS" (
     "ID" INTEGER PRIMARY KEY AUTOINCREMENT,
     "NOME" varchar(64),
@@ -9,6 +12,9 @@ CREATE TABLE IF NOT EXISTS "USUARIOS" (
   );
 `
 
+/**
+ * script de inserção de dados base
+ */
 const ADD_USUARIOS_DATA = `
 INSERT INTO USUARIOS (NOME, EMAIL, TELEFONE)
 VALUES 
@@ -17,8 +23,11 @@ VALUES
     ('Mirtes Faria Lima', 'mirtes_fl@yahoo.com', '3125214430')
 `
 
-function criaTabelaUsr() {
-    Database.run(USUARIO_TABLE, (error)=> {
+/**
+ * Function que aplica a criação da tabela USUARIOS via SQLite
+ */
+function criaTabelaUsuarios() {
+    Database.run(USUARIOS_TABLE, (error)=> {
        if (error) {
             console.log("Erro ao criar tabela de Usuários")
         } else {
@@ -27,8 +36,10 @@ function criaTabelaUsr() {
     });
 }
 
-
-function populaTabelaUsr() {
+/**
+ * Function que polula via SQLite a tabela USUARIOS
+ */
+function populaTabelaUsuarios() {
     Database.run(ADD_USUARIOS_DATA, (error)=> {
        if (error) {
         console.log("Erro ao popular tabela de Usuários")
@@ -40,7 +51,10 @@ function populaTabelaUsr() {
 }
 
 
+/**
+ * Roda as funções de criação de tabela e população em serie (Uma após a outra)
+ */
 Database.serialize(()=>{
-    criaTabelaUsr();
-    populaTabelaUsr();
+    criaTabelaUsuarios();
+    populaTabelaUsuarios();
 })

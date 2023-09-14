@@ -1,23 +1,28 @@
 import UsuariosModel from "../models/UsuariosModel.js";
-import DatabaseMetodos from "./DatabaseMetodos.js";
+import DAO from "./DAO.js";
 
-const USUARIOS_TABELA = "Usuarios"
+const USUARIOS_TABELA = "USUARIOS"
 
-class UsuariosMetodos extends DatabaseMetodos{
+class UsuariosDAO extends DAO{
     /**
      * Método de inserção de dados da tabela Usuários
      * @param {UsuariosModel} data 
      */
-    static inserirUsuario(data){
-        this.inserir(USUARIOS_TABELA, data)
+    static async inserirUsuario(data){
+        const dataValues = Object.values(data)
+        const query = `
+        INSERT INTO USUARIOS (NOME, EMAIL, TELEFONE) VALUES (?,?,?)
+        `
+        const result = await this.inserir(query, dataValues)
+        return result
     }
 
     /**
      * Método que retorna todos os registros da tabela Usuários
      * @returns {Array<UsuariosModel>}
      */
-    static buscarTodosOsUsuarios(){
-        return this.buscar(USUARIOS_TABELA)
+    static async buscarTodosOsUsuarios(){
+        return await this.buscar(USUARIOS_TABELA)
     }
 
     /**
@@ -47,4 +52,4 @@ class UsuariosMetodos extends DatabaseMetodos{
     }
 }
 
-export default UsuariosMetodos;
+export default UsuariosDAO;

@@ -1,7 +1,7 @@
 import express from "express";
 // const express = require("express")
 import UsuariosController from "./src/controllers/UsuariosController.js";
-
+import cors from "cors";
 /**
  * Instancia do express
  * (inicialização do que foi importado)
@@ -23,6 +23,8 @@ app.listen(port, ()=>{
  * Middleware para reconhecimento do formato JSON para a aplicação
  */
 app.use(express.json())
+app.use(cors('*'))
+
 
 /** 
  * Chamada das rotas do controller
